@@ -10,6 +10,17 @@ html.light {
   --fg: #000000;   /* light foreground text */
 }
 
+/* custom text selection styling */
+::selection {
+  background-color: var(--fg);
+  color: var(--bg);
+}
+/* firefox */
+::-moz-selection {
+  background-color: var(--fg);
+  color: var(--bg);
+}
+
 /* Base */
 html {
     font-family: 'Newsreader', serif;
