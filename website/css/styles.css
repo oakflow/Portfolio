@@ -1,0 +1,429 @@
+/* === THEME TOKENS === */
+:root {
+  --bg: #000000;   /* dark background */
+  --fg: #ffffff;   /* dark foreground text */
+  --s: #8f8f8f85;   
+}
+
+html.light {
+  --bg: #ffffff;   /* light background */
+  --fg: #000000;   /* light foreground text */
+}
+
+/* Base */
+html {
+    font-family: 'Newsreader', serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: var(--fg); /* Make html background same as footer */
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: background-color .3s ease, color .3s ease;
+  background: var(--bg);
+  overflow: hidden;
+}
+
+/* variables for icon shatter */
+.github-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    --x1: 0;
+    --y1: 0;
+    --x2: 0;
+    --y2: 0;
+    --x3: 0;
+    --y3: 0;
+    --x4: 0;
+    --y4: 0;
+    --x5: 0;
+    --y5: 0;
+    --x6: 0;
+    --y6: 0;
+    --x7: 0;
+    --y7: 0;
+    --x8: 0;
+    --y8: 0;
+}
+
+.linkedin-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    --x1: 0;
+    --y1: 0;
+    --x2: 0;
+    --y2: 0;
+    --x3: 0;
+    --y3: 0;
+    --x4: 0;
+    --y4: 0;
+    --x5: 0;
+    --y5: 0;
+    --x6: 0;
+    --y6: 0;
+    --x7: 0;
+    --y7: 0;
+    --x8: 0;
+    --y8: 0;
+}
+
+.email-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    --x1: 0;
+    --y1: 0;
+    --x2: 0;
+    --y2: 0;
+    --x3: 0;
+    --y3: 0;
+    --x4: 0;
+    --y4: 0;
+    --x5: 0;
+    --y5: 0;
+    --x6: 0;
+    --y6: 0;
+    --x7: 0;
+    --y7: 0;
+    --x8: 0;
+    --y8: 0;
+}
+
+
+/* make form controls inherit the page font */
+input, button, textarea, select { font: inherit; }
+
+
+/* Redirects */
+/* .other {
+    flex: 1;
+    display: flex;
+    position: fixed;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    padding: 40px;
+    padding-left: 60px;
+    word-spacing: 20px;
+} */
+
+
+/* Main content container for proper centering */
+.main-content {
+  height: 52.5vh; /* Fixed height - exactly half the screen */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* Position name and subname at bottom of container */
+  align-items: center;
+  margin-bottom: auto
+}
+
+.name {
+    display: flex;
+    font-size: clamp(32px, 8vw, 60px);
+    font-weight: 400;
+    color: var(--fg);
+    text-shadow: 0 0 0 var(--fg);
+    justify-content: center;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    z-index: 1;
+}
+
+
+.subname {
+    display: flex;
+    font-size: clamp(9.6px, 2.4vw, 18px);
+    font-weight: 400;
+    color: var(--fg);
+    text-shadow: 0 0 0 var(--fg);
+    justify-content: center;
+    text-align: center;
+    white-space: nowrap;
+    padding-top: 0.25rem;
+    /* overflow: hidden; */
+}
+
+
+
+.middle {
+    display: flex;             
+    align-items: center;        
+    justify-content: center;
+    z-index: 0;
+    /* overflow: hidden; */
+}
+
+
+
+
+
+
+/* row layout + spacing */
+.icon-row {
+  display: flex;
+  gap: 4.5rem;
+}
+
+/* shared behavior for all icon images */
+.githubicon,
+.linkedinicon {
+  display: block;
+  transition: transform .15s ease, filter .325s ease;
+}
+
+.emailicon {
+  display: block;
+  transition: transform .15s ease, filter .325s ease;
+}
+
+/* individual custom sizes */
+.githubicon  { width: clamp(24px, 4vw, 33px); height: clamp(24px, 4vw, 33px); }
+.emailicon   { width: clamp(22px, 3.8vw, 31px); height: clamp(22px, 3.8vw, 31px); }
+.linkedinicon{ width: clamp(28px, 4.5vw, 39px); height: clamp(28px, 4.5vw, 38px); }
+
+/* clickable area (no bg on hover) */
+.icon-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;      /* comfy tap target */
+  min-height: 44px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+      /* drop-shadow(calc(-1 * var(--x1)) var(--y1) 0 var(--fg)) y is minus 
+      drop-shadow(calc(-1 * var(--x2)) var(--y2) 0 var(--fg))
+      drop-shadow(calc(-1 * var(--x3)) var(--y3) 0 var(--fg))
+      drop-shadow(calc(-1 * var(--x4)) var(--y4) 0 var(--fg))
+      drop-shadow(calc(-1 * var(--x5)) var(--y5) 0 var(--fg)) 
+      drop-shadow(calc(-1 * var(--x6)) var(--y6) 0 var(--fg))
+      drop-shadow(calc(-1 * var(--x7)) var(--y7) 0 var(--fg))
+      drop-shadow(calc(-1 * var(--x8)) var(--y8) 0 var(--fg)) 
+      */ 
+
+/* hover: slight enlarge + colored glow per icon */
+.github-box .icon-link:hover .githubicon,
+.github-box .icon-link:focus-visible .githubicon {
+  filter: 
+      drop-shadow(var(--x1) var(--y1) 0 var(--s)) /* y is minus */ 
+      drop-shadow(var(--x2) var(--y2) 0 var(--s))
+      drop-shadow(var(--x3) var(--y3) 0 var(--s))
+      drop-shadow(var(--x4) var(--y4) 0 var(--s))
+      drop-shadow(var(--x5) var(--y5) 0 var(--s))
+      drop-shadow(var(--x6) var(--y6) 0 var(--s))
+      drop-shadow(var(--x7) var(--y7) 0 var(--s))
+      drop-shadow(var(--x8) var(--y8) 0 var(--s))
+}
+
+.email-box .icon-link:hover .emailicon,
+.email-box .icon-link:focus-visible .emailicon {
+  z-index: -1; /* Email shadows render behind other icons */
+  filter: 
+      drop-shadow(var(--x1) var(--y1) 0 var(--s)) 
+      drop-shadow(var(--x2) var(--y2) 0 var(--s))
+      drop-shadow(var(--x3) var(--y3) 0 var(--s))
+      drop-shadow(var(--x4) var(--y4) 0 var(--s))
+}
+
+
+.linkedin-box .icon-link:hover .linkedinicon,
+.linkedin-box .icon-link:focus-visible .linkedinicon {
+  filter: 
+      drop-shadow(var(--x1) var(--y1) 0 var(--s)) /* y is minus */ 
+      drop-shadow(var(--x2) var(--y2) 0 var(--s))
+      drop-shadow(var(--x3) var(--y3) 0 var(--s))
+      drop-shadow(var(--x4) var(--y4) 0 var(--s))
+      drop-shadow(var(--x5) var(--y5) 0 var(--s))
+      drop-shadow(var(--x6) var(--y6) 0 var(--s))
+      drop-shadow(var(--x7) var(--y7) 0 var(--s))
+      drop-shadow(var(--x8) var(--y8) 0 var(--s))
+
+}
+
+/* theme switching: show white icons on dark; black on light */
+.icon-light { display: none; }
+html.light .icon-dark  { display: none; }
+html.light .icon-light { display: block; }
+
+/* reduce motion users */
+@media (prefers-reduced-motion: reduce) {
+  .githubicon, .emailicon, .linkedinicon { transition: none; }
+}
+
+
+
+.footer {
+    color: var(--bg);
+    background-color: var(--fg);
+    font-size: 1vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 3vh;
+    margin-top: auto; 
+    padding-top: 0.5vh; 
+    
+    z-index: 10;
+}
+
+/* needed for mobile to act as spacer since footer would be fixed */
+.footerdummy {
+    height: 0vh;
+}
+
+
+
+.mac {
+    color: var(--fg); 
+    transition: color 255ms ease, text-shadow 255ms ease;
+    will-change: color;
+}
+.mac:hover {
+    text-shadow: #FDBF57 0px 21px 0px, #495965 0px 42px 0px;
+    color: #7A003C;
+}
+
+
+
+/* Temporarily disable transitions for instant theme changes */
+.no-transition .mac {
+    transition: none !important;
+}
+
+/* Canvas sits on top but only intercepts clicks on the rope itself */
+/* it was x = 1350 */
+#ropeCanvas {
+    display: flex;
+    flex: 1;
+    position: fixed;
+    inset: 0;
+    pointer-events: none; /* Don't block clicks to page elements */
+    touch-action: none;
+    z-index: 1000; /* Ensure it's on top */
+}
+
+.pixel-art {
+  image-rendering: pixelated;      /* modern browsers */
+  image-rendering: crisp-edges;    /* Firefox */
+  -ms-interpolation-mode: nearest-neighbor; /* legacy */
+}
+
+/* Loading screen */
+#loadingScreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--bg);  /* Use same background as page */
+  z-index: 9999;
+  transition: opacity 1.5s cubic-bezier(0.4, 0.0, 0.2, 1);  /* Smoother easing */
+}
+
+#loadingScreen.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* High zoom on DESKTOP - stack everything vertically */
+@media (hover: hover) and (max-width: 700px) {
+    body {
+      overflow: auto;
+    }
+
+    .main-content {
+        padding-top: 50%;
+        height: 40vh;
+        justify-content: center;
+        gap: 1rem;
+    }
+    
+    .icon-row {
+        flex-direction: column;
+        gap: 1.5rem;
+        align-items: center;
+        padding: 20%;
+    }
+    
+    .name {
+        font-size: clamp(24px, 10vw, 45px);
+    }
+    
+    .subname {
+        font-size: clamp(8px, 3vw, 14px);
+        text-align: center;
+        max-width: 90vw;
+    }
+    
+    .footer {
+        font-size: clamp(8px, 2vw, 12px);
+        padding: 0.22rem;
+        padding-bottom: 0.11rem;;
+        /* padding-bottom: 1vh; */
+    }
+}
+
+/* MOBILE/TOUCH devices - portrait orientation styles */
+@media (hover: none) and (pointer: coarse) {
+    
+    .main-content {
+      height: 45vh; /* Fixed height - exactly half the screen */
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end; /* Position name and subname at bottom of container */
+      align-items: center;
+      margin-bottom: auto
+    }
+
+    .footer {
+
+        /* margin-top: auto; */
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        font-size: 1vh;
+        padding-top: 0px;
+    }
+
+    .footerdummy {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 3vh;
+        margin-top: auto;
+        z-index: 10; 
+    }
+
+    .icon-row {
+      gap: 7vw;
+    }
+
+    /* Simple glow effects for mobile instead of complex shatter effects */
+    .github-box .icon-link:hover .githubicon,
+    .github-box .icon-link:focus-visible .githubicon {
+      filter: drop-shadow(0 0 5px var(--s)) !important;
+    }
+
+    .email-box .icon-link:hover .emailicon,
+    .email-box .icon-link:focus-visible .emailicon {
+      filter: drop-shadow(0 0 5px var(--s)) !important;
+    }
+
+    .linkedin-box .icon-link:hover .linkedinicon,
+    .linkedin-box .icon-link:focus-visible .linkedinicon {
+      filter: drop-shadow(0 0 5px var(--s)) !important;
+    }
+
+}
