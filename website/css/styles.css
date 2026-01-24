@@ -212,6 +212,12 @@ input, button, textarea, select { font: inherit; }
   min-height: 44px;
   border-radius: 8px;
   cursor: pointer;
+  
+  /* disable selection on icons */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
       /* drop-shadow(calc(-1 * var(--x1)) var(--y1) 0 var(--fg)) y is minus 
