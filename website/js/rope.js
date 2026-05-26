@@ -324,13 +324,15 @@ function draw() {
         let width = 510 * scale;
         let height = 510 * scale;
 
-        // Prevent scaling beyond ~300% browser zoom and prevent right-edge clipping.
+        // Prevent scaling beyond ~300% browser zoom and prevent right-edge clipping on desktop.
         // By capping to 13.15% of the viewport width, the physical size plateaus at 
         // 300% zoom on 1080p, and it perfectly avoids clipping the edge regardless of zoom.
-        const maxAllowed = window.innerWidth * 0.1315;
-        if (width > maxAllowed) {
-            width = maxAllowed;
-            height = maxAllowed;
+        if (!isMobileTab) {
+            const maxAllowed = window.innerWidth * 0.1315;
+            if (width > maxAllowed) {
+                width = maxAllowed;
+                height = maxAllowed;
+            }
         }
 
         ropeTab.style.width = `${width}px`;

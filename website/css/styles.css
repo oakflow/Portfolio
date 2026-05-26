@@ -27,6 +27,9 @@ html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background-color: var(--fg); /* Make html background same as footer */
+    overflow-x: hidden;
+    overflow-y: hidden;
+    width: 100%;
 }
 
 body {
@@ -35,14 +38,18 @@ body {
   flex-direction: column;
   transition: background-color .3s ease, color .3s ease;
   background: var(--bg);
-  overflow: hidden;
+  overflow: visible; /* Let html handle any needed overflow naturally */
+  width: 100%;
+  position: relative;
 }
 
 /* Allow scrolling on mobile when zoomed/pinched */
 @media (max-height: 600px), (max-width: 600px) {
-  body {
-    overflow-x: hidden;
+  html {
     overflow-y: auto;
+  }
+  body {
+    overflow-y: visible;
   }
 }
 
@@ -431,9 +438,11 @@ html.light .icon-light { display: block; }
 
 /* High zoom on DESKTOP - stack everything vertically */
 @media (hover: hover) and (max-width: 700px) {
-    body {
-      overflow-x: hidden;
+    html {
       overflow-y: auto;
+    }
+    body {
+      overflow-y: visible;
     }
 
     .main-content {
