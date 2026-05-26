@@ -510,6 +510,8 @@ html.light .icon-light { display: block; }
 
     .icon-row {
       gap: 7vw;
+      justify-content: center;
+      width: 100%; /* Override var(--hero-width) so it doesn't overflow to the right */
     }
 
     /* Simple glow effects for mobile instead of complex shatter effects */
