@@ -43,13 +43,13 @@ body {
   position: relative;
 }
 
-/* Allow scrolling on mobile when zoomed/pinched */
+/* Prevent scrolling on mobile */
 @media (max-height: 600px), (max-width: 600px) {
-  html {
-    overflow-y: auto;
-  }
-  body {
-    overflow-y: visible;
+  html, body {
+    overflow: hidden !important; /* Force no scrolling on phone */
+    height: 100%;
+    position: fixed;
+    width: 100%;
   }
 }
 
@@ -480,15 +480,6 @@ html.light .icon-light { display: block; }
 /* MOBILE/TOUCH devices - portrait orientation styles */
 @media (hover: none) and (pointer: coarse) {
     
-    .main-content {
-      height: 45vh; /* Fixed height - exactly half the screen */
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end; /* Position name and subname at bottom of container */
-      align-items: center;
-      margin-bottom: auto
-    }
-
     .footer {
 
         /* margin-top: auto; */
@@ -509,9 +500,11 @@ html.light .icon-light { display: block; }
     }
 
     .icon-row {
-      gap: 7vw;
-      justify-content: center;
+      flex-direction: column;
+      gap: 3.5vh;
+      align-items: center;
       width: 100%; /* Override var(--hero-width) so it doesn't overflow to the right */
+      margin-top: 5vh; /* Push icons down lower away from text */
     }
 
     /* Simple glow effects for mobile instead of complex shatter effects */
