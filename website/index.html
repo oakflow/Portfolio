@@ -28,22 +28,23 @@
   
   <!-- Pull-cord canvas (sits over the page but doesn't block clicks) -->
   <canvas id="ropeCanvas"></canvas>
+  <div id="ropeTabWrapper" class="rope-tab-wrapper" aria-hidden="true">
+    <img id="ropeTab" class="rope-tab pixel-art" src="assets/images/pull-white.svg" alt="">
+  </div>
 
-  <div class="topbar"></div>
+  <div class="header"></div>
   
   <!-- Main content container for proper centering -->
   <div class="main-content">
-    <!-- <div class="other">Skills Projects</div> -->
-    <div class="name" >Sam Abdulhameed</div>
-    <div class="subname">
-      CS Major + Business Minor @&nbsp;
-      <a class="mac" href="https://www.mcmaster.ca/" target="_blank" style="text-decoration: none;">McMaster University</a>
-    </div>
-  </div>
+    <div class="hero-content">
+      <!-- <div class="other">Skills Projects</div> -->
+      <div class="name">Sam Abdulhameed</div>
+      <div class="subname">
+        CS Major + Business Minor @&nbsp;
+        <a class="mac" href="https://www.mcmaster.ca/" target="_blank" style="text-decoration: none;">McMaster University</a>
+      </div>
 
-
-  <div class="middle">
-      <nav class="icon-row">
+      <nav class="middle icon-row">
         <!-- GitHub -->
         <div class="github-box">
         <a class="icon-link" href="https://github.com/oakflow" target="_blank" aria-label="GitHub">
@@ -54,7 +55,7 @@
 
         <!-- Email -->
         <div class="email-box">
-        <a class="icon-link" href="mailto:oaaxii@gmail.com" aria-label="Email">
+        <a class="icon-link" href="mailto:sam@a-s.am" aria-label="Email">
           <img class="emailicon icon-dark"  src="assets/icons/email-white.png"    alt="">
           <img class="emailicon icon-light" src="assets/icons/email-black.png"    alt="">
         </a>
@@ -69,6 +70,7 @@
         </div>
 
       </nav>
+    </div>
   </div>
 
 
@@ -80,5 +82,32 @@
   
   <script src="js/rope.js" defer></script>
   <script src="js/iconshatter.js" defer></script>
+  <script>
+    (() => {
+      const name = document.querySelector('.name');
+      const hero = document.querySelector('.hero-content');
+
+      if (!name || !hero) return;
+
+      const syncHeroWidth = () => {
+        hero.style.setProperty('--hero-width', `${Math.ceil(name.getBoundingClientRect().width)}px`);
+      };
+
+      const scheduleSync = () => requestAnimationFrame(syncHeroWidth);
+
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(scheduleSync);
+      }
+
+      if (window.ResizeObserver) {
+        const observer = new ResizeObserver(scheduleSync);
+        observer.observe(name);
+      } else {
+        window.addEventListener('resize', scheduleSync);
+      }
+
+      scheduleSync();
+    })();
+  </script>
 </body>
 </html>

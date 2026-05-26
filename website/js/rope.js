@@ -1,18 +1,28 @@
 const canvas = document.getElementById('ropeCanvas');
 const ctx = canvas.getContext('2d');
+const ropeTabWrapper = document.getElementById('ropeTabWrapper');
+const ropeTab = document.getElementById('ropeTab');
+const ropeTabLightSrc = 'assets/images/pull-white.svg';
+const ropeTabDarkSrc = 'assets/images/pull-black.svg';
+let devicePixelRatioScale = window.devicePixelRatio || 1;
 
 ctx.imageSmoothingEnabled = false;        // standard
 ctx.mozImageSmoothingEnabled = false;     // Firefox fallback
 ctx.webkitImageSmoothingEnabled = false;  // old webkit fallback
 ctx.msImageSmoothingEnabled = false;      // old IE fallback
 
-const darkImg  = new Image();
-darkImg.src  = 'assets/images/pull-black.png';
-
-const lightImg = new Image();
-lightImg.src = 'assets/images/pull-white.png';
-
 let dark = true;
+
+function isTouchDevice() {
+    return 'ontouchstart' in window ||
+        /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
+function syncRopeTabSource() {
+    if (ropeTab) {
+        ropeTab.src = dark ? ropeTabLightSrc : ropeTabDarkSrc;
+    }
+}
 
 let point = {
     x: 200,
@@ -48,8 +58,7 @@ let point = {
 // Function to get responsive rope X position
 function getRopeX() {
     // Check for actual mobile devices only (no width check)
-    const isMobile = 'ontouchstart' in window || window.innerWidth <= 400 ||
-                    /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    const isMobile = isTouchDevice();
     
     // from the right edge
     if (isMobile) {
@@ -60,6 +69,22 @@ function getRopeX() {
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
+syncRopeTabSource();
+
+function syncCanvasSize() {
+    devicePixelRatioScale = window.devicePixelRatio || 1;
+
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+    canvas.width = Math.round(width * devicePixelRatioScale);
+    canvas.height = Math.round(height * devicePixelRatioScale);
+    ctx.setTransform(devicePixelRatioScale, 0, 0, devicePixelRatioScale, 0, 0);
+}
+
+syncCanvasSize();
 
 // Initialize rope points with responsive positioning
 function initRopePoints(major) {
@@ -144,11 +169,10 @@ let point20 = points.point20;
 
 // Function to resize canvas and reposition rope
 function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    syncCanvasSize();
     
     // Update rope length based on screen size
-    L = window.innerWidth < 400 ? 2 : 4;
+    L = window.innerWidth < 400 ? 2.5 : 5;
     
     // Reposition rope points when window resizes
     const newPoints = initRopePoints(false); // minor offsets on resize
@@ -181,6 +205,12 @@ function resizeCanvas() {
 // Add window resize event listener
 window.addEventListener('resize', resizeCanvas);
 
+// Track scroll position for mobile canvas rendering
+let scrollOffsetY = 0;
+window.addEventListener('scroll', () => {
+    scrollOffsetY = window.scrollY;
+}, { passive: true });
+
 // Prevent Safari pull-to-refresh on canvas specifically
 canvas.addEventListener('touchstart', (e) => {
     // Always prevent default on canvas to stop pull-to-refresh
@@ -206,11 +236,15 @@ window.addEventListener('load', () => {
 
 
 function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
     ctx.imageSmoothingEnabled = false;        // standard
     ctx.mozImageSmoothingEnabled = false;     // Firefox fallback
     ctx.webkitImageSmoothingEnabled = false;  // old webkit fallback
     ctx.msImageSmoothingEnabled = false;      // old IE fallback
+
+    // On mobile with absolute canvas, draw normally; on desktop (fixed canvas), adjust for scroll
+    const isMobileCanvas = isTouchDevice();
+    const scrollAdjust = isMobileCanvas ? 0 : scrollOffsetY;
 
     // -------------------------- ROPE LINE --------------------------
 
@@ -218,26 +252,26 @@ function draw() {
     ctx.lineCap   = "square";     // roundedends
     ctx.strokeStyle = dark ? "#ffffff" : "#000000"; // color
     ctx.beginPath();             
-    ctx.moveTo(point1.x, point1.y); // jump to beginning
-    ctx.lineTo(point2.x, point2.y);
-    ctx.lineTo(point3.x, point3.y);
-    ctx.lineTo(point4.x, point4.y);
-    ctx.lineTo(point5.x, point5.y);
-    ctx.lineTo(point6.x, point6.y);
-    ctx.lineTo(point7.x, point7.y); 
-    ctx.lineTo(point8.x, point8.y);
-    ctx.lineTo(point9.x, point9.y);
-    ctx.lineTo(point10.x, point10.y);
-    ctx.lineTo(point11.x, point11.y);
-    ctx.lineTo(point12.x, point12.y);
-    ctx.lineTo(point13.x, point13.y);
-    ctx.lineTo(point14.x, point14.y);
-    ctx.lineTo(point15.x, point15.y);
-    ctx.lineTo(point16.x, point16.y);
-    ctx.lineTo(point17.x, point17.y);
-    ctx.lineTo(point18.x, point18.y);
-    ctx.lineTo(point19.x, point19.y);
-    ctx.lineTo(point20.x, point20.y);
+    ctx.moveTo(point1.x, point1.y - scrollAdjust); // jump to beginning
+    ctx.lineTo(point2.x, point2.y - scrollAdjust);
+    ctx.lineTo(point3.x, point3.y - scrollAdjust);
+    ctx.lineTo(point4.x, point4.y - scrollAdjust);
+    ctx.lineTo(point5.x, point5.y - scrollAdjust);
+    ctx.lineTo(point6.x, point6.y - scrollAdjust);
+    ctx.lineTo(point7.x, point7.y - scrollAdjust); 
+    ctx.lineTo(point8.x, point8.y - scrollAdjust);
+    ctx.lineTo(point9.x, point9.y - scrollAdjust);
+    ctx.lineTo(point10.x, point10.y - scrollAdjust);
+    ctx.lineTo(point11.x, point11.y - scrollAdjust);
+    ctx.lineTo(point12.x, point12.y - scrollAdjust);
+    ctx.lineTo(point13.x, point13.y - scrollAdjust);
+    ctx.lineTo(point14.x, point14.y - scrollAdjust);
+    ctx.lineTo(point15.x, point15.y - scrollAdjust);
+    ctx.lineTo(point16.x, point16.y - scrollAdjust);
+    ctx.lineTo(point17.x, point17.y - scrollAdjust);
+    ctx.lineTo(point18.x, point18.y - scrollAdjust);
+    ctx.lineTo(point19.x, point19.y - scrollAdjust);
+    ctx.lineTo(point20.x, point20.y - scrollAdjust);
     ctx.stroke();                    // actually paint
 
     // ctx.fillStyle = "red";
@@ -273,58 +307,47 @@ function draw() {
     
 
 
-    let bg = dark ? lightImg : darkImg;
-    
-    if (bg.complete && bg.naturalHeight !== 0) {
-        // Calculate smoother angle using multiple points for better interpolation
-        let dx1 = point20.x - point18.x; // Use point18 instead of point19 for smoother curve
-        let dy1 = point20.y - point18.y;
-        let dx2 = point19.x - point17.x; // Additional smoothing vector
-        let dy2 = point19.y - point17.y;
-        
-        // avg vectors for smoother direction
-        let avgDx = (dx1 + dx2) / 2;
-        let avgDy = (dy1 + dy2) / 2;
-        let angle = Math.atan2(avgDy, avgDx); // convert to angle
-        
-        // Save the current canvas state
-        ctx.save();
-        
-        // Move to point20 and rotate based on smoothed rope direction
-        ctx.translate(point20.x, point20.y);
-        ctx.rotate(angle + Math.PI/2 + Math.PI); // Add 1 pi to flip img 180
-        
-        ctx.imageSmoothingEnabled = false;
-        ctx.webkitImageSmoothingEnabled = false; // For Chrome and Safari
-        ctx.mozImageSmoothingEnabled = false;    // For Firefox
-        ctx.msImageSmoothingEnabled = false;     // For Internet Explorer
-        ctx.oImageSmoothingEnabled = false;      // For Opera
+    // Calculate smoother angle using multiple points for better interpolation
+    const dx1 = point20.x - point18.x; // Use point18 instead of point19 for smoother curve
+    const dy1 = point20.y - point18.y;
+    const dx2 = point19.x - point17.x; // Additional smoothing vector
+    const dy2 = point19.y - point17.y;
 
+    // avg vectors for smoother direction
+    const avgDx = (dx1 + dx2) / 2;
+    const avgDy = (dy1 + dy2) / 2;
+    const angle = Math.atan2(avgDy, avgDx); // convert to angle
 
+    if (ropeTabWrapper && ropeTab) {
+        const isMobileTab = isTouchDevice();
+        const scale = isMobileTab ? 0.145 : 0.165;
+        let width = 510 * scale;
+        let height = 510 * scale;
 
-
-
-        if (window.innerWidth < 600) {
-            scale = .145;
-            offsetX = -41.9 * (scale / .165);
-            offsetY = -35 * (scale / .165);
-            width = bg.width * scale
-            height = bg.height * scale
-            ctx.drawImage(bg, offsetX, offsetY, width+0.5, height);
+        // Prevent scaling beyond ~300% browser zoom and prevent right-edge clipping.
+        // By capping to 13.15% of the viewport width, the physical size plateaus at 
+        // 300% zoom on 1080p, and it perfectly avoids clipping the edge regardless of zoom.
+        const maxAllowed = window.innerWidth * 0.1315;
+        if (width > maxAllowed) {
+            width = maxAllowed;
+            height = maxAllowed;
         }
 
-        else {
-            scale = .165; // Constant scale for best quality
-            width = bg.width * scale
-            height = bg.height * scale
-            ctx.drawImage(bg, -41.9, -35, width+0.5, height);
-        }
-
-
+        ropeTab.style.width = `${width}px`;
+        ropeTab.style.height = `${height}px`;
         
+        // Set wrapper size for flex centering
+        ropeTabWrapper.style.width = `${width}px`;
+        ropeTabWrapper.style.height = `${height}px`;
+
+        // On mobile with absolute positioning, no scroll adjustment needed
+        // On desktop with fixed canvas, adjust for scroll
+        const scrollAdjust = isMobileTab ? 0 : scrollOffsetY;
         
-        // Restore the canvas state
-        ctx.restore();
+        // Center the wrapper (and thus the image) on the rope endpoint
+        ropeTabWrapper.style.left = `${point20.x - width / 2}px`;
+        ropeTabWrapper.style.top = `${point20.y - height / 2 - scrollAdjust}px`;
+        ropeTabWrapper.style.transform = `rotate(${angle + Math.PI / 2 + Math.PI}rad)`;
     }
 
 }
@@ -332,7 +355,7 @@ draw()
 
 
 
-let L = 4; // default rope length
+let L = 5; // default rope length
 const FRICTION = 0.975; // optimal ive found is 0.975
 
 
@@ -471,6 +494,8 @@ document.addEventListener('mouseup', () => {
             } else {
                 document.documentElement.classList.add('light');
             }
+
+            syncRopeTabSource();
             
             // Force a reflow to ensure the theme change happens instantly
             document.documentElement.offsetHeight;
@@ -500,6 +525,8 @@ document.addEventListener('touchend', () => {
             } else {
                 document.documentElement.classList.add('light');
             }
+
+            syncRopeTabSource();
             
             // Force a reflow to ensure the theme change happens instantly
             document.documentElement.offsetHeight;

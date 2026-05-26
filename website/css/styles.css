@@ -38,6 +38,14 @@ body {
   overflow: hidden;
 }
 
+/* Allow scrolling on mobile when zoomed/pinched */
+@media (max-height: 600px), (max-width: 600px) {
+  body {
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+}
+
 /* variables for icon shatter */
 .github-box {
     display: flex;
@@ -130,18 +138,27 @@ input, button, textarea, select { font: inherit; }
 
 /* Main content container for proper centering */
 .main-content {
-  height: 52.5vh; /* Fixed height - exactly half the screen */
   display: flex;
   flex-direction: column;
-  justify-content: flex-end; /* Position name and subname at bottom of container */
+  flex: 1;
+  justify-content: center;
   align-items: center;
-  margin-bottom: auto
+  margin: 0;
+}
+
+.hero-content {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(0.15rem, 0.5vw, 0.35rem);
+  --hero-width: auto;
 }
 
 .name {
     display: flex;
     font-size: clamp(32px, 8vw, 60px);
     font-weight: 400;
+  line-height: 1;
     color: var(--fg);
     text-shadow: 0 0 0 var(--fg);
     justify-content: center;
@@ -156,12 +173,13 @@ input, button, textarea, select { font: inherit; }
     display: flex;
     font-size: clamp(9.6px, 2.4vw, 18px);
     font-weight: 400;
+    line-height: 1;
     color: var(--fg);
     text-shadow: 0 0 0 var(--fg);
     justify-content: center;
     text-align: center;
     white-space: nowrap;
-    padding-top: 0.25rem;
+    padding-bottom: 2rem;
     /* overflow: hidden; */
 }
 
@@ -172,6 +190,7 @@ input, button, textarea, select { font: inherit; }
     align-items: center;        
     justify-content: center;
     z-index: 0;
+    padding-top: 1rem;
     /* overflow: hidden; */
 }
 
@@ -183,7 +202,10 @@ input, button, textarea, select { font: inherit; }
 /* row layout + spacing */
 .icon-row {
   display: flex;
-  gap: 4.5rem;
+  width: var(--hero-width);
+  justify-content: space-between;
+  gap: 0;
+  padding: 0;
 }
 
 /* shared behavior for all icon images */
@@ -199,19 +221,21 @@ input, button, textarea, select { font: inherit; }
 }
 
 /* individual custom sizes */
-.githubicon  { width: clamp(24px, 4vw, 33px); height: clamp(24px, 4vw, 33px); }
-.emailicon   { width: clamp(22px, 3.8vw, 31px); height: clamp(22px, 3.8vw, 31px); }
-.linkedinicon{ width: clamp(28px, 4.5vw, 39px); height: clamp(28px, 4.5vw, 38px); }
+.githubicon  { width: clamp(28px, 4vw, 32px); height: clamp(28px, 4vw, 32px); }
+.emailicon   { width: clamp(22px, 3.8vw, 30px); height: clamp(22px, 3.8vw, 30px); }
+.linkedinicon{ width: clamp(28px, 4.5vw, 23px); height: clamp(28px, 4.5vw, 22px); }
 
 /* clickable area (no bg on hover) */
 .icon-link {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 44px;      /* comfy tap target */
-  min-height: 44px;
+  padding: 0;
+  margin: 0;
   border-radius: 8px;
   cursor: pointer;
+  line-height: 0;
+  padding: 0.075rem;
   
   /* disable selection on icons */
   -webkit-user-select: none;
@@ -301,6 +325,20 @@ html.light .icon-light { display: block; }
 }
 
 
+.header{
+    color: var(--bg);
+    background-color: var(--fg);
+    font-size: 1vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 3vh;
+    margin-top: auto; 
+    padding-top: 0.5vh; 
+    
+    z-index: 10;
+}
+
 
 .mac {
     color: var(--fg); 
@@ -331,6 +369,43 @@ html.light .icon-light { display: block; }
     z-index: 1000; /* Ensure it's on top */
 }
 
+/* On mobile, use absolute so canvas scrolls with page */
+@media (max-width: 600px) {
+    #ropeCanvas {
+        position: absolute;
+        height: 200%;
+    }
+}
+
+.rope-tab-wrapper {
+  position: fixed;
+  left: 0;
+  top: 0;
+  transform-origin: center;
+  pointer-events: none;
+  z-index: 1001;
+  will-change: transform, left, top;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* On mobile, use absolute so rope tab scrolls with page */
+@media (max-width: 600px) {
+    .rope-tab-wrapper {
+        position: absolute;
+    }
+}
+
+.rope-tab {
+  display: block;
+  position: relative;
+  width: 79px;
+  height: auto;
+  image-rendering: pixelated;
+  shape-rendering: crispEdges;
+}
+
 .pixel-art {
   image-rendering: pixelated;      /* modern browsers */
   image-rendering: crisp-edges;    /* Firefox */
@@ -357,7 +432,8 @@ html.light .icon-light { display: block; }
 /* High zoom on DESKTOP - stack everything vertically */
 @media (hover: hover) and (max-width: 700px) {
     body {
-      overflow: auto;
+      overflow-x: hidden;
+      overflow-y: auto;
     }
 
     .main-content {
