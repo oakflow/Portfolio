@@ -231,9 +231,9 @@ input, button, textarea, select { font: inherit; }
 }
 
 /* individual custom sizes */
-.githubicon  { width: clamp(28px, 4vw, 32px); height: clamp(28px, 4vw, 32px); }
+.githubicon  { width: clamp(28px, 4vw, 28px); height: clamp(28px, 4vw, 28px); }
 .emailicon   { width: clamp(22px, 3.8vw, 30px); height: clamp(22px, 3.8vw, 30px); }
-.linkedinicon{ width: clamp(28px, 4.5vw, 23px); height: clamp(28px, 4.5vw, 22px); }
+.linkedinicon{ width: clamp(26px, 4.5vw, 21px); height: clamp(26px, 4.5vw, 20px); }
 
 /* clickable area (no bg on hover) */
 .icon-link {
@@ -315,18 +315,19 @@ html.light .icon-light { display: block; }
 
 
 
-.footer {
-    color: var(--bg);
-    background-color: var(--fg);
-    font-size: 1vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 3vh;
-    margin-top: auto; 
-    padding-top: 0.5vh; 
-    
-    z-index: 10;
+.footer,
+.header {
+  color: var(--bg);
+  background-color: var(--fg);
+  font-size: clamp(8px, 1vw, 12px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 2vh; /* slightly slimmer */
+  min-height: 20px;
+  margin-top: auto;
+  padding-top: 0.4vh;
+  z-index: 10;
 }
 
 /* needed for mobile to act as spacer since footer would be fixed */
@@ -335,18 +336,8 @@ html.light .icon-light { display: block; }
 }
 
 
-.header{
-    color: var(--bg);
-    background-color: var(--fg);
-    font-size: 1vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 3vh;
-    margin-top: auto; 
-    padding-top: 0.5vh; 
-    
-    z-index: 10;
+.header {
+  margin-top: 0;
 }
 
 
@@ -448,6 +439,14 @@ html.light .icon-light { display: block; }
       overflow-y: visible;
     }
 
+    .footer,
+    .header {
+        font-size: clamp(8px, 2vw, 12px);
+      height: 2.25vh;
+      min-height: 20px;
+      padding-top: 0.15rem;
+    }
+
     .main-content {
         padding-top: 50%;
         height: 40vh;
@@ -482,6 +481,14 @@ html.light .icon-light { display: block; }
 
 /* MOBILE/TOUCH devices - portrait orientation styles */
 @media (hover: none) and (pointer: coarse) {
+
+  .footer,
+  .header {
+    font-size: clamp(8px, 2.2vw, 12px);
+    height: 2.25vh;
+    min-height: 20px;
+    padding-top: 0.15rem;
+  }
     
     .footer {
 
@@ -489,8 +496,7 @@ html.light .icon-light { display: block; }
         position: fixed;
         bottom: 0;
         width: 100%;
-        font-size: 1vh;
-        padding-top: 0px;
+    margin-top: 0;
     }
 
     .footerdummy {
@@ -500,6 +506,10 @@ html.light .icon-light { display: block; }
         height: 3vh;
         margin-top: auto;
         z-index: 10; 
+    }
+
+    .subname {
+      word-spacing: 0rem;
     }
 
     .icon-row {

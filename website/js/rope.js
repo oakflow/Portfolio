@@ -6,6 +6,20 @@ const ropeTabLightSrc = 'assets/images/pull-white.svg';
 const ropeTabDarkSrc = 'assets/images/pull-black.svg';
 let devicePixelRatioScale = window.devicePixelRatio || 1;
 
+function preloadRopeTabImages() {
+    // Warm the browser cache/decode for both theme images so first pull is instant.
+    const sources = [ropeTabLightSrc, ropeTabDarkSrc];
+    sources.forEach((src) => {
+        const img = new Image();
+        img.src = src;
+        if (typeof img.decode === 'function') {
+            img.decode().catch(() => {
+                // Ignore decode failures; loading by src is still enough to prime cache.
+            });
+        }
+    });
+}
+
 ctx.imageSmoothingEnabled = false;        // standard
 ctx.mozImageSmoothingEnabled = false;     // Firefox fallback
 ctx.webkitImageSmoothingEnabled = false;  // old webkit fallback
@@ -69,6 +83,7 @@ function getRopeX() {
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
+preloadRopeTabImages();
 syncRopeTabSource();
 
 function syncCanvasSize() {
